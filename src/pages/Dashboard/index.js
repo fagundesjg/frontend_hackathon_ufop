@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import moment from "moment";
 
 import colors from "../../styles/colors";
 // import api from "../../services/api";
@@ -11,12 +12,15 @@ import {
   Title,
   Section,
   InputDate,
-  DateContainer
+  DateContainer,
+  Button,
+  InputDateTitle
 } from "./styles";
 import { Row, Column } from "../../styles/global";
 import IndicatorBox from "../../components/IndicatorBox";
 
 function Dashboard() {
+  const today = moment().format("YYYY-MM-DD");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   useEffect(() => {
@@ -77,18 +81,21 @@ function Dashboard() {
       <Row margin="0 0 0 0" alignItems="center" justifyContent="space-between">
         <Logo />
         <DateContainer>
-          <Title>Início Período</Title>
+          <InputDateTitle>Início Período</InputDateTitle>
           <InputDate
             type="date"
             value={startDate}
             onChange={d => setStartDate(d.target.value)}
+            max={today}
           />
-          <Title>Fim Período</Title>
+          <InputDateTitle>Fim Período</InputDateTitle>
           <InputDate
             type="date"
             value={endDate}
             onChange={d => setEndDate(d.target.value)}
+            max={today}
           />
+          <Button onClick={() => alert("Você clicou no botão!")}>Buscar</Button>
         </DateContainer>
       </Row>
       <Section>

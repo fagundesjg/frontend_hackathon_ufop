@@ -27,20 +27,41 @@ export const Title = styled.h6`
   font-weight: bold;
   font-size: 1.3rem;
   text-transform: uppercase;
-  margin-left: 5px;
+  margin: 0 5px;
 `;
 
 export const DateContainer = styled.div`
   display: flex;
   flex: 1;
+  align-items: center;
   justify-content: space-around;
   margin: 0 50px;
-  max-height: 30px;
+  height: 30px;
+`;
+
+export const Button = styled.button.attrs({
+  type: "button"
+})`
+  background-color: ${colors.orange};
+  color: ${colors.light};
+  text-transform: uppercase;
+  font-weight: bold;
+  border: none;
+  width: 100px;
+  margin: 0 10px;
+  height: 30px;
+`;
+
+export const InputDateTitle = styled.h6`
+  color: ${colors.light};
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 15px;
 `;
 
 export const InputDate = styled.input`
   border: 2px solid transparent;
-  min-width: 150px;
+  width: 175px;
   &:hover {
     cursor: pointer;
   }
