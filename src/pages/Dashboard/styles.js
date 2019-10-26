@@ -50,6 +50,9 @@ export const Button = styled.button.attrs({
   width: 100px;
   margin: 0 10px;
   height: 30px;
+  &:hover {
+    background-color: rgba(250, 101, 54, 0.8);
+  }
 `;
 
 export const InputDateTitle = styled.h6`
