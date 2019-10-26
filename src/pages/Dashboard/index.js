@@ -148,7 +148,13 @@ function Dashboard() {
             onChange={d => setEndDate(d.target.value)}
             max={today}
           />
-          <Button onClick={() => alert("Você clicou no botão!")}>Buscar</Button>
+          <Button
+            onClick={() =>
+              alert("Infelizmente essa função ainda não está implementada :c")
+            }
+          >
+            Buscar
+          </Button>
         </DateContainer>
       </Row>
       <Section>
@@ -172,12 +178,14 @@ function Dashboard() {
               <FontAwesomeIcon icon={faCircle} color={colors.orange} />
               <Title>Saúde da empresa</Title>
               <Row justifyContent="flex-start">
-                <IndicatorBox
-                  radius={85}
-                  label={healthData.label}
-                  health={healthData.health}
-                  previusHealth={healthData.previusHealth}
-                />
+                <button type="button" onClick={() => setChartSelected(0)}>
+                  <IndicatorBox
+                    radius={85}
+                    label={healthData.label}
+                    health={healthData.health}
+                    previusHealth={healthData.previusHealth}
+                  />
+                </button>
               </Row>
             </Row>
           </Column>

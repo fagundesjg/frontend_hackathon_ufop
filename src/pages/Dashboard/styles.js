@@ -42,7 +42,7 @@ export const DateContainer = styled.div`
 export const Button = styled.button.attrs({
   type: "button"
 })`
-  background-color: ${colors.orange};
+  background-color: ${colors.orange} !important;
   color: ${colors.light};
   text-transform: uppercase;
   font-weight: bold;
@@ -51,7 +51,7 @@ export const Button = styled.button.attrs({
   margin: 0 10px;
   height: 30px;
   &:hover {
-    background-color: rgba(250, 101, 54, 0.8);
+    background-color: rgba(250, 101, 54, 0.8) !important;
   }
 `;
 
