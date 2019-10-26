@@ -5,7 +5,7 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 
 import colors from "../../styles/colors";
-// import api from "../../services/api";
+import api from "../../services/api";
 import {
   Container,
   Logo,
@@ -23,9 +23,38 @@ function Dashboard() {
   const today = moment().format("YYYY-MM-DD");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [health, setHealth] = useState(0);
+  const [taxaDeAdesao, setTaxaDeAdesao] = useState({});
+  const [chartDate, setChartDate] = useState({});
+  const [taxaDeEvasao, setTaxaDeEvasao] = useState({});
+  const [taxaDeResgate, setTaxaDeResgate] = useState({});
+  const [ticketMedio, setTicketMedio] = useState({});
+  const [receitaTotal, setReceitaTotal] = useState({});
+  const [volumeDeVendaFidelizadas, setVolumeDeVendaFidelizadas] = useState({});
+  const [chartSelected, setChartSelected] = useState(0);
+
   useEffect(() => {
     async function loadApiData() {
-      // const { data } = await api.get("/backendHackathon");
+      const { data } = await api.get("/backendHackathon");
+      const {
+        saude,
+        taxaDeAdesao,
+        chartDate,
+        taxaDeEvasao,
+        taxaDeResgate,
+        ticketMedio,
+        receitaTotal,
+        volumeDeVendaFidelizadas
+      } = data;
+
+      setHealth(saude);
+      setTaxaDeAdesao(taxaDeAdesao);
+      setChartDate(chartDate);
+      setTaxaDeEvasao(taxaDeEvasao);
+      setTaxaDeResgate(taxaDeResgate);
+      setTicketMedio(ticketMedio);
+      setReceitaTotal(receitaTotal);
+      setVolumeDeVendaFidelizadas(volumeDeVendaFidelizadas);
     }
 
     loadApiData();
@@ -33,44 +62,68 @@ function Dashboard() {
 
   const healthData = {
     label: "saúde",
-    health: 0.86,
+    health: health,
     previusHealth: 0.84
   };
 
   const data = [
-    { label: "Resgate", health: 0.4, previusHealth: 0.84 },
-    { label: "Adesão", health: 0.3, previusHealth: 0.84 },
-    { label: "Evasão", health: 0.12, previusHealth: 0.84 },
-    { label: "Ticket", health: 0.74, previusHealth: 0.84 },
-    { label: "Fidelizados", health: 0.86, previusHealth: 0.84 }
+    {
+      label: "Receita",
+      health: receitaTotal.valor || 0,
+      previusHealth: receitaTotal.variacaoReferencia || 0
+    },
+    {
+      label: "Adesão",
+      health: taxaDeAdesao.valor || 0,
+      previusHealth: taxaDeAdesao.variacaoReferencia || 0
+    },
+    {
+      label: "Evasão",
+      health: taxaDeEvasao.valor || 0,
+      previusHealth: taxaDeEvasao.variacaoReferencia || 0
+    },
+    {
+      label: "Ticket",
+      health: ticketMedio.valor || 0,
+      previusHealth: ticketMedio.variacaoReferencia || 0
+    },
+    {
+      label: "Fidelizados",
+      health: volumeDeVendaFidelizadas.valor || 0,
+      previusHealth: volumeDeVendaFidelizadas.variacaoReferencia || 0
+    }
   ];
 
+  const getChartValues = () => {
+    switch (chartSelected) {
+      case 0:
+        return chartDate.values;
+      case 1:
+        return volumeDeVendaFidelizadas.chartDate.values;
+      case 2:
+        return chartDate.values;
+      case 3:
+        return taxaDeEvasao.chartDate.values;
+      case 4:
+        return ticketMedio.chartDate.values;
+      case 5:
+        return volumeDeVendaFidelizadas.chartDate.values;
+      default:
+        return chartDate.values;
+    }
+  };
+
   const chartData = {
-    labels: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July"
-    ],
+    labels: chartDate.labels,
     datasets: [
       {
-        label: "My First dataset",
+        label: "Evolução x Período",
         backgroundColor: "rgba(250,101,54,0.6)",
         borderColor: colors.light,
         borderWidth: "0.3px",
         hoverBackgroundColor: colors.orange,
         hoverBorderColor: colors.black,
-        data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40],
+        data: getChartValues(),
         responsive: true
       }
     ]
@@ -134,14 +187,22 @@ function Dashboard() {
           <Title>Avaliação de desempenho dos indicadores de saúde</Title>
         </Row>
         <Row justifyContent="center">
-          {data.map(d => (
-            <IndicatorBox
+          {data.map((d, i) => (
+            <button
               key={Math.random()}
-              radius={35}
-              label={d.label}
-              health={d.health}
-              previusHealth={d.previusHealth}
-            />
+              type="button"
+              onClick={() => {
+                console.log("CLiquei");
+                setChartSelected(i);
+              }}
+            >
+              <IndicatorBox
+                radius={35}
+                label={d.label}
+                health={d.health}
+                previusHealth={d.previusHealth}
+              />
+            </button>
           ))}
         </Row>
       </Section>

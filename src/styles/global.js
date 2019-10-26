@@ -32,6 +32,11 @@ export const Row = styled.div`
   margin: ${props => props.margin || "10px 0 0 0"};
   background-color: ${props => props.backgroundColor || "transparent"};
   flex: ${props => props.flex || 1};
+
+  button {
+    border: none;
+    background: transparent;
+  }
 `;
 
 export const Column = styled.div`
